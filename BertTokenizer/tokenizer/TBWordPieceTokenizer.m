@@ -55,7 +55,7 @@
                 if (start > 0) {
                     substr = [NSString stringWithFormat:@"##%@",substr];
                 }
-                if ([self.vocab containsObject:substr.lowercaseString]) {
+                if ([self.vocab containsObject:substr]) {
                     cur_substr = substr;
                     break;
                 }

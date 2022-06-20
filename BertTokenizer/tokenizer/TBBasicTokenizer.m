@@ -7,31 +7,43 @@
 
 #import "TBBasicTokenizer.h"
 #import "NSString+TBTokenizer.h"
+@interface TBBasicTokenizer ()
+
+@end
+
 
 @implementation TBBasicTokenizer
 
 - (NSArray <NSString *> *)tokenize:(NSString *)text never_split:(NSArray *)neverSplit {
-    
-    return  [self tokenize:text];
-}
-
-- (NSArray <NSString *> *)tokenize:(NSString *)text {
+    self.never_split = [neverSplit copy];
     NSString *cleanText = [self tb_cleanText:text];
     NSString *chineseTest = [self tb_tokenizeChineseText:cleanText];
     NSArray <NSString *> *origToken = [self tb_whiteSpaceTokenize:chineseTest];
     
     NSMutableString *str = [NSMutableString string];
     for (NSString *token in origToken) {
-        if ([token isEqualToString:@""] || token == nil) {
+        NSString *aToken = token;
+        if ([aToken isEqualToString:@""] || aToken == nil) {
             continue;
         }
-        NSArray *res_list = [self tb_runSplitOnPunc:token];
+        if (![neverSplit containsObject:aToken]) {
+            if (self.doLowerCase) {
+                aToken = aToken.lowercaseString;
+            }else if (true) {
+                
+            }
+        }
+        NSArray *res_list = [self tb_runSplitOnPunc:aToken];
         for (NSString *sub in res_list) {
             [str appendFormat:@"%@ ",sub];
         }
     }
     NSArray <NSString *> *resToken = [self tb_whiteSpaceTokenize:str];
     return resToken;
+}
+
+- (NSArray <NSString *> *)tokenize:(NSString *)text {
+    return [self tokenize:text never_split:@[]];
 }
 
 - (NSString *)tb_cleanText:(NSString *)text {
@@ -130,6 +142,13 @@
     unichar a = [character characterAtIndex:0];
     if( a > 0x4e00 && a < 0x9fff)//判断输入的是否是中文
     {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)tb_isWhiteSpace:(NSString *)charater {
+    if ([charater isEqualToString:@" "]) {
         return YES;
     }
     return NO;

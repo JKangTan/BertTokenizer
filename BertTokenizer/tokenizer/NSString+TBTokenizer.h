@@ -16,8 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 //根据特殊字符分割
 - (NSArray <NSString *> *)tb_runSplitOnPunc;
 //是否是中文
-- (BOOL)tb_isChineseChar;
-// 字符是否是中文
+- (BOOL)tb_isChineseWord;
+//
 - (BOOL)tb_isWhiteSpace;
 // 全角转半角
 - (NSString *)tb_convertFullWidthToHalfWidth;
@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)tb_isEnglishWord;
 // 把字符串的非中文去除
 - (NSString *)tb_keepChineseOnly;
+
+- (NSString *)tb_replaceWordWithDictionary:(NSDictionary *)dic;
 
 @end
 

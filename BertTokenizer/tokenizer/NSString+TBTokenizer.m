@@ -56,7 +56,7 @@
     return false;
 }
 
--(BOOL)tb_isChineseChar {
+-(BOOL)tb_isChineseWord {
     NSString *match = @"(^[\u4e00-\u9fff\u2A700-\u2CEAF\u3400-\u4DBF\u20000-\u2A6DF\uF900-\uFAFF\u2F800-\u2FA1F]+$)";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF matches %@", match];
     BOOL predicateResult = [predicate evaluateWithObject:self];
@@ -124,7 +124,7 @@
 - (NSString *)tb_getLettersWithRegularExpression:(NSString *)expr {
     NSMutableString *letters = [[NSMutableString alloc] init];
     // 正则
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[a-zA-Z]" options:0 error:nil];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:expr options:0 error:nil];
     NSArray *array = [regex matchesInString:self options:0 range:NSMakeRange(0, self.length)];
     // 利用数组中的位置将所有符合条件的字符拼接起来
     for (NSTextCheckingResult *result in array) {
@@ -159,6 +159,14 @@
                                              withString:template
                                                 options:NSRegularExpressionSearch // 注意里要选择这个枚举项,这个是用来匹配正则表达式的
                                                   range:NSMakeRange (0, self.length)];
+}
+
+- (NSString *)tb_replaceWordWithDictionary:(NSDictionary *)dic {
+    NSString *mstr = [self mutableCopy];
+    for (NSString *key in dic.allKeys) {
+        mstr = [self stringByReplacingOccurrencesOfString:key withString:dic[key]];
+    }
+    return mstr;
 }
 
 @end

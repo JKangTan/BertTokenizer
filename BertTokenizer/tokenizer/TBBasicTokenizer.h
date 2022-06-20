@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TBBasicTokenizer : NSObject
 
 @property (nonatomic, strong) NSArray *never_split;
+@property (nonatomic, assign) BOOL doLowerCase;
 
 - (NSArray <NSString *> *)tokenize:(NSString *)text never_split:(NSArray *)neverSplit;
 - (NSArray <NSString *> *)tokenize:(NSString *)text;
